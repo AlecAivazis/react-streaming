@@ -51,21 +51,14 @@ function disable() {
   globalConfig.disable = true
 }
 
-async function renderToStream(element: React.ReactNode, options: Options = {}): Promise<Result> {
-  element = React.createElement(SuspenseData, null, element)
+async function renderToStream(element: React.ReactElement, options: Options = {}): Promise<Result> {
+  element = React.cloneElement(element, {
+    injectToStream: (chunk: unknown) => {
+      injectToStream(chunk)
+    }
+  })
   let injectToStream: (chunk: unknown) => void = (chunk) => buffer.push(chunk)
   const buffer: unknown[] = []
-  element = React.createElement(
-    StreamProvider,
-    {
-      value: {
-        injectToStream: (chunk: unknown) => {
-          injectToStream(chunk)
-        }
-      }
-    },
-    element
-  )
 
   const disable = globalConfig.disable || (options.disable ?? resolveSeoStrategy(options).disableStream)
   const webStream = options.webStream ?? !(await nodeStreamModuleIsAvailable())
