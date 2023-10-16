@@ -1,5 +1,5 @@
 {
-  "name": "react-streaming",
+  "name": "react-streaming-compat",
   "description": "React 18 Streaming. Full-fledged & Easy.",
   "version": "0.3.14",
   "main": "./dist/cjs/server/hooks.js",
